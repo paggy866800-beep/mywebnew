@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENRI｜森裡 - 在自然與手作之間，慢下來</title>
+    <style>
+        :root {
+            --color-primary: #2D4030;   /* 森裡綠 */
+            --color-secondary: #8C6D53; /* 燕麥棕 */
+            --color-accent: #D9A05B;    /* 木質金 */
+            --color-bg: #F9F8F3;        /* 暖米白 */
+            --color-card-bg: #FFFFFF;
+            --color-text: #333333;
+            --color-text-light: #666666;
+            --font-main: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 導覽列 Navigation */
+        header {
+            background-color: rgba(249, 248, 243, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #E5E2D9;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+
+        .logo span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            display: block;
+            color: var(--color-secondary);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-family: var(--font-main);
+            color: var(--color-primary);
+            font-weight: 500;
+            cursor: pointer;
+            padding-bottom: 4px;
+            transition: color 0.3s, border-bottom 0.3s;
+        }
+
+        .nav-links button:hover,
+        .nav-links button.active {
+            color: var(--color-secondary);
+            border-bottom: 2px solid var(--color-secondary);
+        }
+
+        /* 單頁 Section 控制 */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* Hero Banner (首頁專用) */
+        .hero-banner {
+            position: relative;
+            height: 65vh;
+            min-height: 400px;
+            background: linear-gradient(rgba(45, 64, 48, 0.4), rgba(45, 64, 48, 0.6)), 
+                        url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-main {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--color-secondary);
+            color: #FFFFFF;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-main:hover {
+            background-color: var(--color-primary);
+        }
+
+        /* 通用 Sub-Header (關於與課程) */
+        .page-header {
+            background: linear-gradient(rgba(45, 64, 48, 0.6), rgba(45, 64, 48, 0.8)), 
+                        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: #FFF;
+            padding: 4.5rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.3rem;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        /* 內容容器 Container */
+        .container {
+            max-width: 1100px;
+            margin: 3.5rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--color-primary);
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .section-title p {
+            color: var(--color-secondary);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 核心價值與簡介 Grid */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .intro-card {
+            background-color: var(--color-card-bg);
+            padding: 2.2rem 1.8rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border-top: 4px solid var(--color-primary);
+            text-align: center;
+        }
+
+        .intro-card h3 {
+            color: var(--color-primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .intro-card p {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+        }
+
+        /* 卡片 Grid (特色與課程) */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.2rem;
+        }
+
+        .clickable-card {
+            background-color: var(--color-card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #E5E2D9;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .card-img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-tag {
+            align-self: flex-start;
+            background-color: var(--color-bg);
+            color: var(--color-secondary);
+            font-size: 0.8rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .card-title {
+            color: var(--color-primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .card-desc {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            border-top: 1px solid #F0EEE6;
+            padding-top: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        .btn-detail {
+            margin-top: 1rem;
+            text-align: center;
+            background-color: var(--color-primary);
+            color: #FFF;
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* 品牌故事 Story Section */
+        .story-section {
+            background-color: var(--color-card-bg);
+            padding: 2.8rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 3.5rem;
+        }
+
+        .story-section h2 {
+            color: var(--color-primary);
+            font-size: 1.7rem;
+            margin-bottom: 1.2rem;
+            border-left: 5px solid var(--color-secondary);
+            padding-left: 1rem;
+        }
+
+        .story-section p {
+            margin-bottom: 1rem;
+            color: var(--color-text);
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        .highlight-box {
+            background-color: var(--color-bg);
+            border: 1px solid #E5E2D9;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1.8rem 0;
+            color: var(--color-primary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Persona 客戶洞察表格 */
+        .persona-card {
+            background-color: #FFF;
+            border-radius: 8px;
+            border: 1px solid #E5E2D9;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .persona-header {
+            background-color: var(--color-primary);
+            color: #FFF;
+            padding: 1.2rem 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .persona-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .persona-header span {
+            font-size: 0.85rem;
+            background-color: var(--color-secondary);
+            padding: 0.2rem 0.8rem;
+            border-radius: 12px;
+        }
+
+        .persona-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .persona-table th, 
+        .persona-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #E5E2D9;
+            text-align: left;
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+
+        .persona-table th {
+            width: 22%;
+            color: var(--color-primary);
+            font-weight: 600;
+            background-color: #FAF9F5;
+        }
+
+        .persona-quote {
+            background-color: #FDFBF7;
+            padding: 1.2rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 1.8rem;
+            border-left: 4px solid var(--color-accent);
+            font-size: 0.95rem;
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        /* Modal 控制（完全不包含 <form> 表單元素） */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background-color: var(--color-card-bg);
+            max-width: 620px;
+            width: 100%;
+            padding: 2.2rem;
+            border-radius: 8px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            font-size: 1.8rem;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--color-primary);
+        }
+
+        .modal-box h3 {
+            color: var(--color-primary);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--color-bg);
+            padding-bottom: 0.5rem;
+        }
+
+        .modal-box blockquote {
+            background-color: var(--color-bg);
+            padding: 0.8rem 1rem;
+            border-left: 4px solid var(--color-secondary);
+            font-style: italic;
+            margin: 1rem 0;
+            color: var(--color-primary);
+            font-size: 0.95rem;
+        }
+
+        .modal-box p {
+            color: var(--color-text);
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        /* 頁尾 Footer */
+        footer {
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-logo {
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero-title { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .persona-table th, .persona-table td { display: block; width: 100%; }
+            .persona-table th { background-color: transparent; padding-bottom: 0.2rem; }
+            .story-section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 導覽列 (分頁頁籤) -->
+    <header>
+        <div class="nav-container">
+            <div class="logo" onclick="switchTab('home')">
+                SENRI｜森裡
+                <span>NATURAL LIFE & CRAFT</span>
+            </div>
+            <ul class="nav-links">
+                <li><button id="nav-home" class="active" onclick="switchTab('home')">首頁 Home</button></li>
+                <li><button id="nav-about" onclick="switchTab('about')">品牌故事 About</button></li>
+                <li><button id="nav-courses" onclick="switchTab('courses')">體驗與小聚 Courses</button></li>
+                <li><button id="nav-contact" onclick="switchTab('contact')">聯絡我 Contact</button></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- ==================== 頁面一：首頁 HOME ==================== -->
+    <div id="page-home" class="page-section active">
+        
+        <!-- Banner 區塊 -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1 class="hero-title">「我不是沒有生活，我只是太久沒有好好生活。」</h1>
+                <p class="hero-subtitle">逃離都市焦慮，找回專屬成熟世代的心靈避難所</p>
+                <button class="btn-main" onclick="switchTab('courses')">探索森裡小聚</button>
+            </div>
+        </section>
+
+        <main class="container">
+            
+            <!-- 品牌核心簡介 -->
+            <div class="section-title">
+                <h2>SENRI 的核心價值</h2>
+                <p>不是來上課，是來生活。不是只做作品，是留下感受。</p>
+            </div>
+
+            <div class="intro-grid">
+                <div class="intro-card">
+                    <h3>🌿 植物的沉靜秩序</h3>
+                    <p>植物陪伴生命，作為卸下社會角色的卸妝水。在泥土與綠意中，找回個人邊界感與生活主導權。</p>
+                </div>
+                <div class="intro-card">
+                    <h3>🕯️ 慢下來的手感陪伴</h3>
+                    <p>拒絕快節奏打卡與流水線公式。透過 100% 天然精油調香與手作大豆蠟燭，以實體手作溫度撫平焦慮。</p>
+                </div>
+                <div class="intro-card">
+                    <h3>☕ 精緻 深度小聚</h3>
+                    <p>微型社交距離，平行遊戲般的治癒力。共享空間與香氣，無須過度表現，自然交流真實生命故事。</p>
+                </div>
+            </div>
+
+            <!-- 品牌視角卡片 -->
+            <div class="section-title">
+                <h2>品牌體驗視角（點擊觀看文案）</h2>
+                <p>點選下方特色卡片，深入了解 SENRI 帶給您的微度假感受</p>
+            </div>
+
+            <div class="grid-cards">
+                
+                <!-- 卡片 1 -->
+                <div class="clickable-card" onclick="openModal('modal-h1')">
+                    <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80" alt="精油調香" class="card-img">
+                    <div class="card-body">
+                        <span class="card-tag">感官體驗</span>
+                        <h3 class="card-title">天然精油調香 × 喚醒感官</h3>
+                        <p class="card-desc">拒絕千篇一律的化學香精，用自然的香氣重寫專屬於你的日常質感敘事。</p>
+                        <div class="btn-detail">點擊閱讀完整體驗文案 →</div>
+                    </div>
+                </div>
+
+                <!-- 卡片 2 -->
+                <div class="clickable-card" onclick="openModal('modal-h2')">
+                    <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" alt="大溪山林" class="card-img">
+                    <div class="card-body">
+                        <span class="card-tag">空間場域</span>
+                        <h3 class="card-title">大溪山林 × 游牧式美學</h3>
+                        <p class="card-desc">把大溪的風與植物氣息揉進香氣裡，結合質感咖啡廳與選品店打造微度假。</p>
+                        <div class="btn-detail">點擊閱讀完整體驗文案 →</div>
+                    </div>
+                </div>
+
+                <!-- 卡片 3 -->
+                <div class="clickable-card" onclick="openModal('modal-h3')">
+                    <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80" alt="植物手作" class="card-img">
+                    <div class="card-body">
+                        <span class="card-tag">深度連結</span>
+                        <h3 class="card-title">植物苔球與生態瓶 × 故事分享</h3>
+                        <p class="card-desc">不只是完成一件作品，而是透過手作感受生命，與夥伴分享最近的生活。</p>
+                        <div class="btn-detail">點擊閱讀完整體驗文案 →</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==================== 頁面二：品牌故事 ABOUT ==================== -->
+    <div id="page-about" class="page-section">
+        
+        <div class="page-header">
+            <h1>信仰與自然之間，重新感受生活</h1>
+            <p>SENRI 森裡 品牌經營與核心理念</p>
+        </div>
+
+        <main class="container">
+            
+            <article class="story-section">
+                <h2>品牌緣起 Origin</h2>
+                <p>人生有些轉變，往往從一個意想不到的相遇開始。</p>
+                <p>曾經在人生低潮、情緒低落的時期，創辦人偶然接觸了手作香氛蠟燭課程。原本只是想為自己找一個喘息的空間，沒想到在感受香氣、親手創作的過程中，漸漸找到了舒緩情緒的出口。</p>
+                <p>後來，透過擔任兩年中央大學手作課程助教、考取韓國天然精油調香證照，以及陪伴孩子自學成長的歲月，更加深刻明白：「生命不需要被複製，每個人都有自己的節奏；學習不只發生在教室裡，自然與手作同樣能帶領我們認識自己。」</p>
+
+                <div class="highlight-box">
+                    「陪你透過自然、香氣與手作，重新感受生活。」<br>
+                    「在自然與手作之間，慢下來。」
+                </div>
+
+                <p>於是 SENRI｜森裡慢慢成形了。森裡不只是一個自然手作品牌，更是一份將生命經歷與對生活美感的熱愛，匯聚而成的心意。</p>
+            </article>
+
+            <!-- Persona 客戶洞察 -->
+            <article class="story-section">
+                <h2>目標受眾洞察 Persona</h2>
+                <p>我們不將客戶定位為「有問題或需要被治療的人」，而是「想為自己留一點時間的人」。</p>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <h3>Persona 核心人物：林雅雯</h3>
+                        <span>35–50歲 成熟世代 / 職場與家庭兼顧</span>
+                    </div>
+                    <table class="persona-table">
+                        <tr>
+                            <th>使用情境</th>
+                            <td>平日工作與家庭責任繁忙，週末想找一個不吵鬧、不需要大量社交，又能讓自己放鬆的活動。她喜歡植物、香氣與生活美學，希望暫時離開日常，度過一個有質感的午後。</td>
+                        </tr>
+                        <tr>
+                            <th>購買動機</th>
+                            <td>想為自己留一段時間；喜歡天然精油、植物與手作；想嘗試不同於一般逛街吃飯的休閒；更深層的動機是：想重新找回生活中的小確幸與自己喜歡的事情。</td>
+                        </tr>
+                        <tr>
+                            <th>期待感受</th>
+                            <td>放鬆、被自然包圍、感官被喚醒、專注當下。她希望離開時不只是「完成了一件作品」，而是覺得：「今天的自己，好像被好好照顧了一下。」</td>
+                        </tr>
+                    </table>
+
+                    <div class="persona-quote">
+                        💛 林雅雯的內心話：<br>
+                        「我想找一個地方，不用趕時間，也不用特別表現自己。可以聞聞香氣、摸摸植物、做點手作，喝杯咖啡，跟幾個人聊聊生活。回家的時候，心裡是舒服的。」
+                    </div>
+                </div>
+            </article>
+
+            <!-- 市場策略 -->
+            <article class="story-section">
+                <h2>市場藍海定位 Strategy</h2>
+                <p>SENRI 避開傳統手作課「追求極致效率、流水線趕進度」的紅海，打造專屬於成熟世代的心靈避難所：</p>
+                <p>🌿 <strong>消除 (Eliminate)：</strong> 冰冷的流水線公式、網美打卡喧囂、都會商辦的狹小壓迫感。</p>
+                <p>🌱 <strong>提升 (Raise)：</strong> 香氣與大溪自然地景的深度連結、小班制互動的親切陪伴溫度。</p>
+                <p>✨ <strong>創造 (Create)：</strong> 專屬成熟世代的「心靈重開機（Mental Reset）」儀式，打造自然×香氣×手作三位一體的慢活小聚。</p>
+            </article>
+
+        </main>
+    </div>
+
+    <!-- ==================== 頁面三：體驗與小聚 COURSES ==================== -->
+    <div id="page-courses" class="page-section">
+        
+        <div class="page-header">
+            <h1>SENRI 森裡小聚與體驗項目</h1>
+            <p>精緻小班 × 質感選品店家與咖啡廳合作</p>
+        </div>
+
+        <main class="container">
+            
+            <div class="grid-cards">
+                
+                <!-- 課程 1 -->
+                <div class="clickable-card" onclick="openModal('modal-c1')">
+                    <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80" alt="精油調香" class="card-img">
+                    <div class="card-body">
+                        <span class="card-tag">香氛系列</span>
+                        <h3 class="card-title">100% 天然精油調香與大豆蠟燭</h3>
+                        <p class="card-desc">探索植物精油的前中後調，調配專屬自己的香氣，將大地的氣息揉進手作天然大豆蠟燭中。</p>
+                        <div class="card-meta">
+                            <span>人數：2–3 人小班</span>
+                            <span>時間：約 2 小時</span>
+                        </div>
+                        <div class="btn-detail">點擊查看課程文案與細節</div>
+                    </div>
+                </div>
+
+                <!-- 課程 2 -->
+                <div class="clickable-card" onclick="openModal('modal-c2')">
+                    <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80" alt="植物手作" class="card-img">
+                    <div class="card-body">
+                        <span class="card-tag">植物手作</span>
+                        <h3 class="card-title">苔玉（苔球）與生態瓶植栽手作</h3>
+                        <p class="card-desc">雙手觸碰泥土與青苔，感受植物生命的呼吸。將微型森林帶回日常居所，感受被綠意包圍的平靜。</p>
+                        <div class="card-meta">
+                            <span>人數：2–3 人小班</span>
+                            <span>時間：約 1.5 小時</span>
+                        </div>
+                        <div class="btn-detail">點擊查看課程文案與細節</div>
+                    </div>
+                </div>
+
+                <!-- 課程 3 -->
+                <div class="clickable-card" onclick="openModal('modal-c3')">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="森裡小聚" class="card-img">
+                    <div class="card-body">
+                        <span class="card-tag">空間服務 / 異業合作</span>
+                        <h3 class="card-title">森裡小聚 × 咖啡廳跨界微展覽</h3>
+                        <p class="card-desc">結合新竹以北獨立咖啡廳與選品店，在咖啡香與植物香氣中，展開一段下午茶與生命故事交流。</p>
+                        <div class="card-meta">
+                            <span>地點：合作咖啡場域</span>
+                            <span>形式：季節限定特企</span>
+                        </div>
+                        <div class="btn-detail">點擊查看課程文案與細節</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==================== 頁面四：聯絡我 CONTACT ==================== -->
+    <div id="page-contact" class="page-section">
+        
+        <div class="page-header">
+            <h1>聯絡 SENRI 森裡</h1>
+            <p>無論是體驗小聚預約、跨界合作，或只是想聊聊植物與香氣，都歡迎與我們聯繫。</p>
+        </div>
+
+        <main class="container">
+            
+            <div class="story-section" style="max-width: 800px; margin: 0 auto 3rem auto;">
+                <h2>官方聯絡資訊 Contact Info</h2>
+                <p>若有任何手作小聚預約、企業合作包班，或異業空間展演需求，歡迎隨時透過以下資訊聯繫創辦人：</p>
+                
+                <div style="background-color: var(--color-bg); border-left: 5px solid var(--color-secondary); padding: 1.8rem; border-radius: 6px; margin: 2rem 0;">
+                    <p style="font-size: 1.1rem; color: var(--color-primary); font-weight: 600; margin-bottom: 0.8rem;">
+                        👤 聯絡人：Emily
+                    </p>
+                    <p style="font-size: 1.05rem; color: var(--color-text); margin-bottom: 0.6rem;">
+                        📞 聯絡電話：<a href="tel:0989866800" style="color: var(--color-secondary); font-weight: 500; text-decoration: underline;">0989866800</a>
+                    </p>
+                    <p style="font-size: 1.05rem; color: var(--color-text); margin-bottom: 0.6rem;">
+                        ✉️ 電子郵件：<a href="mailto:paggy866800@gmail.com" style="color: var(--color-secondary); font-weight: 500; text-decoration: underline;">paggy866800@gmail.com</a>
+                    </p>
+                    <p style="font-size: 0.95rem; color: var(--color-text-light); margin-top: 1rem;">
+                        📍 服務區域：大溪山林聚落 / 大台北及新竹以北合作獨立咖啡廳與選品空間
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 2.5rem;">
+                    <p style="font-size: 1rem; color: var(--color-primary); font-weight: 500; margin-bottom: 1rem;">
+                        點擊下方按鈕可直接開啟郵件發送諮詢訊息給 Emily：
+                    </p>
+                    <a href="mailto:paggy866800@gmail.com?subject=SENRI%20森裡手作體驗與合作諮詢" class="btn-main" style="display: inline-block; text-decoration: none;">
+                        寄送電子郵件給 Emily
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==================== MODALS 彈出視窗 (均無使用 <form>) ==================== -->
+
+    <!-- 首頁 Modal 1 -->
+    <div class="modal-overlay" id="modal-h1" onclick="closeModalOnOverlay(event, 'modal-h1')">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal-h1')">&times;</button>
+            <h3>【天然精油調香】喚醒被日常鈍化的感官</h3>
+            <blockquote>
+                「去百貨公司買流水線量產的專櫃香水，是你離真實自我最遠的時候。真正的質感，是親手找回大地的氣息。」
+            </blockquote>
+            <p>在忙碌與繁雜的日常中，我們的感官往往變得鈍化。上班面對螢幕，下班面對訊息，時間被切得碎片化。</p>
+            <p>SENRI 堅持選用 100% 天然精油，不使用化學合成香精與冰冷的 AI 智能調香公式。在調香師的溫柔引導下，你將一步步探索植物前調、中調與基調的變化，讓香氣成為抵禦高壓焦慮的定心丸。</p>
+            <p>帶走的不只是一瓶調香作品，而是專屬成熟世代的「心靈重開機（Mental Reset）」儀式。</p>
+        </div>
+    </div>
+
+    <!-- 首頁 Modal 2 -->
+    <div class="modal-overlay" id="modal-h2" onclick="closeModalOnOverlay(event, 'modal-h2')">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal-h2')">&times;</button>
+            <h3>【游牧式自然聚落】自然不只在山裡，也在生活中</h3>
+            <blockquote>
+                「不用遠行，只要一個午後。在大溪山林與質感咖啡空間的交會處，享受一段屬於你的城市微度假。」
+            </blockquote>
+            <p>許多傳統手作工作室侷限於都市水泥四面牆內，做完香氛走出去又是車水馬龍。SENRI 翻轉了沒有獨立實體店面的劣勢，將其昇華為「游牧式策展」。</p>
+            <p>我們將大溪山林的自然光影與綠意，帶進精選的獨立咖啡廳、藝文空間與圖書館。這讓自然不再遙遠：只要有一張有植物的桌子、一杯茶與天然香氣，這裡就是屬於你的「森裡」。</p>
+        </div>
+    </div>
+
+    <!-- 首頁 Modal 3 -->
+    <div class="modal-overlay" id="modal-h3" onclick="closeModalOnOverlay(event, 'modal-h3')">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal-h3')">&times;</button>
+            <h3>【精緻 質感小聚】微型社交與生命故事交流</h3>
+            <blockquote>
+                「現代人的崩潰通常很安靜。在這裡，你不用很厲害，也不用刻意社交，只需要安心坐下來，做回你自己。」
+            </blockquote>
+            <p>市場上常見 10–20 人的大型手作課，往往強調「快速成品」與「打卡拍照」，卻少了一份人與人之間的溫度。</p>
+            <p>SENRI 主打 2–3 人精緻小班，如同幼兒的「平行遊戲」，共享空間與香氣，維持低社交壓力。我們不只問「作品做得漂不漂亮」，更關心「最近的你，正在經歷什麼？這株植物讓你想到什麼？」讓手作成為媒介，聽見彼此真實的生命故事。</p>
+        </div>
+    </div>
+
+    <!-- 課程 Modal 1 -->
+    <div class="modal-overlay" id="modal-c1" onclick="closeModalOnOverlay(event, 'modal-c1')">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal-c1')">&times;</button>
+            <h3>🕯️ 天然精油調香與手作大豆蠟燭小聚</h3>
+            <p><strong>體驗概念：</strong>「不是來學技巧，而是來做一件屬於自己的香氣作品。」</p>
+            <p><strong>流程介紹：</strong></p>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--color-text-light);">
+                <li>五感開啟：靜心品味各種天然植物精油香氣。</li>
+                <li>調香引導：選取心儀的前調、中調與基調，記錄香氣配方。</li>
+                <li>手作倒蠟：親手將精油融入天然大豆蠟，製作質感香氛蠟燭。</li>
+                <li>課後交流：享用合作場地特製飲品，聊聊香氣帶來的記憶與故事。</li>
+            </ul>
+            <p style="background-color: var(--color-bg); padding:1rem; border-radius:4px; color:var(--color-primary);">
+                ✨ 帶走的不只是一盞蠟燭，而是一段被好好照顧的午後時光。
+            </p>
+        </div>
+    </div>
+
+    <!-- 課程 Modal 2 -->
+    <div class="modal-overlay" id="modal-c2" onclick="closeModalOnOverlay(event, 'modal-c2')">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal-c2')">&times;</button>
+            <h3>🌱 苔玉（苔球）與生態瓶植栽體驗</h3>
+            <p><strong>體驗概念：</strong>「重新找回手掌與泥土的真實連結。」</p>
+            <p><strong>流程介紹：</strong></p>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--color-text-light);">
+                <li>植物認識：認識觀葉植物與苔蘚的生長屬性。</li>
+                <li>手作捏塑：親手捏製土球、包覆水苔與纏線，體驗慢下來的專注。</li>
+                <li>養護卡片：獲得專屬養護小卡與綠化管家諮詢服務。</li>
+            </ul>
+            <p style="background-color: var(--color-bg); padding:1rem; border-radius:4px; color:var(--color-primary);">
+                🌿 專為「想綠化又怕養死」的都市人設計，提供無壓力的自然陪伴。
+            </p>
+        </div>
+    </div>
+
+    <!-- 課程 Modal 3 -->
+    <div class="modal-overlay" id="modal-c3" onclick="closeModalOnOverlay(event, 'modal-c3')">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal-c3')">&times;</button>
+            <h3>☕ 森裡小聚 × 咖啡廳合作策展</h3>
+            <p><strong>體驗概念：</strong>「最懂空間美學的綠化管家，游牧式的城市微度假。」</p>
+            <p><strong>合作模式：</strong></p>
+            <p>SENRI 與新竹以北獨立文青咖啡廳合作，利用離峰時段舉辦微型手作體驗。同時為咖啡場域提供輕資產植栽美學維護，讓學員與顧客在一踏入空間時，就能感受到自然的安定與溫暖。</p>
+        </div>
+    </div>
+
+    <!-- Footer 頁尾 -->
+    <footer>
+        <div class="footer-logo">SENRI｜森裡</div>
+        <p class="footer-text">陪你透過自然、香氣與手作，重新感受生活。</p>
+        <div class="copyright">
+            &copy; 2026 SENRI｜森裡 品牌行銷專案報告展示網頁．版權所有
+        </div>
+    </footer>
+
+    <script>
+        // 切換頁面分頁 (Tab Switching)
+        function switchTab(pageId) {
+            // 隱藏所有頁面區塊
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            // 移除所有導覽按鈕的 active 狀態
+            const navBtns = document.querySelectorAll('.nav-links button');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+
+            // 顯示目標頁面區塊
+            const targetSection = document.getElementById('page-' + pageId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // 設定目標按鈕 active 狀態
+            const targetBtn = document.getElementById('nav-' + pageId);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+
+            // 切換頁面時自動捲動至頂部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 開啟 Modal 視窗
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        // 關閉 Modal 視窗
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        // 點擊背景遮罩時關閉 Modal
+        function closeModalOnOverlay(event, modalId) {
+            if (event.target === document.getElementById(modalId)) {
+                closeModal(modalId);
+            }
+        }
+    </script>
+</body>
+</html>
